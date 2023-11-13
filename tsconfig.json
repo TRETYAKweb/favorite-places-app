@@ -1,0 +1,31 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "useDefineForClassFields": true,
+    "allowJs": false,
+    "skipLibCheck": true,
+    "esModuleInterop": false,
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "jsx": "react-native",
+    "typeRoots": [
+      "node_modules/@types",
+      "types/"
+    ],
+    "baseUrl": ".",
+    "paths": {
+      "*": ["src/*"],
+    }
+  },
+  "include": [
+    "src",
+    // "types"
+  ],
+  "extends": "expo/tsconfig.base"
+}
