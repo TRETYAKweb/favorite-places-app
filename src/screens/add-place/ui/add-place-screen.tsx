@@ -1,9 +1,10 @@
 import { StyleSheet, Text, View } from "react-native";
+import { fonts } from "shared";
 
 export const Screen = () => {
   return (
     <View style={styles.root}>
-      <Text>Add place screen</Text>
+      <Text style={styles.text}>Add place screen</Text>
     </View>
   );
 };
@@ -13,5 +14,8 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+  },
+  text: {
+    fontFamily: fonts.gilroy800,
   },
 });
