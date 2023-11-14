@@ -1,10 +1,18 @@
-import React from "react";
-import { Text, View } from "react-native";
+import React, { useEffect } from "react";
+import { Routing } from "./routes";
+import { useFonts } from "expo-font";
+import * as SplashScreen from "expo-splash-screen";
+import { fontAssets } from "shared";
 
 export const App: React.FC = () => {
-  return (
-    <View>
-      <Text>Hello World</Text>
-    </View>
-  );
+  SplashScreen.preventAutoHideAsync();
+  const [fontsLoaded] = useFonts(fontAssets);
+
+  useEffect(() => {
+    if (fontsLoaded) SplashScreen.hideAsync();
+  }, [fontsLoaded]);
+
+  if (!fontsLoaded) return null;
+
+  return <Routing />;
 };
