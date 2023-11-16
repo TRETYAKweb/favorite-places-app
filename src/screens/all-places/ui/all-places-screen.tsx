@@ -1,9 +1,10 @@
 import { StyleSheet, Text, View } from "react-native";
+import { PlacesList } from "widgets";
 
 export const Screen = () => {
   return (
     <View style={styles.root}>
-      <Text>All places screen</Text>
+      <PlacesList places={[]} />
     </View>
   );
 };
@@ -13,5 +14,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+    padding: 25,
   },
 });
