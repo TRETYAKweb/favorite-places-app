@@ -7,7 +7,7 @@ export const colors = Object.freeze({
   //   accent: "#C8974B",
   error: {
     100: "#F0D4D5",
-    500: "#DB5147",
+    500: "#E82415",
   },
   bg: {
     100: "#F7F7FA",
@@ -15,6 +15,7 @@ export const colors = Object.freeze({
   },
   gray: {
     300: "#ECECEF",
+    400: "#BDBDBD",
     500: "#9f9f9f",
     900: "#121617",
   },
