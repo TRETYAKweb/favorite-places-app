@@ -1,10 +1,12 @@
-import { StyleSheet, Text, View } from "react-native";
-import { fonts } from "shared";
+import { AddPlaceForm } from "features";
+import { useHeaderHeight } from "@react-navigation/elements";
+import { StyleSheet, View } from "react-native";
 
 export const Screen = () => {
+  const headerHeight = useHeaderHeight();
   return (
-    <View style={styles.root}>
-      <Text style={styles.text}>Add place screen</Text>
+    <View style={[styles.root, { marginTop: headerHeight }]}>
+      <AddPlaceForm />
     </View>
   );
 };
@@ -12,10 +14,7 @@ export const Screen = () => {
 const styles = StyleSheet.create({
   root: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  text: {
-    fontFamily: fonts.gilroy800,
+    paddingHorizontal: 25,
+    paddingBottom: 25,
   },
 });
