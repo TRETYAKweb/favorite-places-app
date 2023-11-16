@@ -2,7 +2,7 @@ import { Ionicons } from "@expo/vector-icons";
 import React from "react";
 import { Pressable, StyleSheet } from "react-native";
 
-type IconName = "add";
+type IconName = "add" | "add-circle";
 
 interface IconButtonProps {
   name: IconName;
@@ -32,8 +32,6 @@ export const IconButton: React.FC<IconButtonProps> = ({
 const styles = StyleSheet.create({
   root: {
     padding: 5,
-    borderRadius: 8,
-    marginHorizontal: 10,
   },
   pressed: {
     opacity: 0.4,
