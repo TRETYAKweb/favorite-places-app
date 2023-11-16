@@ -2,7 +2,8 @@ import React, { useEffect } from "react";
 import { Routing } from "./routes";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
-import { fontAssets } from "shared";
+import { fontAssets } from "shared/lib";
+import { StatusBar } from "expo-status-bar";
 
 export const App: React.FC = () => {
   SplashScreen.preventAutoHideAsync();
@@ -14,5 +15,10 @@ export const App: React.FC = () => {
 
   if (!fontsLoaded) return null;
 
-  return <Routing />;
+  return (
+    <>
+      <StatusBar style="dark" />
+      <Routing />
+    </>
+  );
 };
