@@ -7,7 +7,7 @@ import {
   TextInputProps,
 } from "react-native";
 import { FieldError, Noop } from "react-hook-form";
-import { colors, fonts } from "shared";
+import { colors, fonts } from "shared/lib";
 
 type TypeMode = "light";
 
@@ -38,7 +38,7 @@ export const Input: React.FC<InputProps> = ({
   ];
 
   return (
-    <View>
+    <View style={styles.root}>
       <Text style={lableStyle}>{label}</Text>
       <TextInput
         style={inputStyle}
@@ -54,7 +54,7 @@ export const Input: React.FC<InputProps> = ({
 
 const styles = StyleSheet.create({
   root: {
-    marginHorizontal: 7.5,
+    marginVertical: 7.5,
   },
   lable: {
     fontFamily: fonts.roboto700,
@@ -68,12 +68,12 @@ const styles = StyleSheet.create({
   input: {
     fontFamily: fonts.roboto400,
     fontSize: 16,
-    borderWidth: 1,
-    borderColor: colors.white,
     padding: 15,
     borderRadius: 8,
+    backgroundColor: colors.white,
   },
   errorInput: {
+    borderWidth: 1,
     borderColor: colors.error[500],
   },
   textError: {
