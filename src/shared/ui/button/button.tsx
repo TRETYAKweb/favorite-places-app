@@ -3,8 +3,8 @@ import { Pressable, View, Text, StyleSheet } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { colors, fonts } from "../../../shared/lib";
 
-type IconName = "add" | "trash";
-type TypeMode = "error" | "flat" | "light";
+type IconName = "add" | "trash" | "camera" | "location" | "map";
+type TypeMode = "error" | "flat" | "light" | "dark";
 
 interface ButtonProps {
   children: string;
@@ -13,6 +13,7 @@ interface ButtonProps {
   iconName?: IconName;
   iconColor?: string;
   iconSize?: number;
+  style?: { flex: number };
 }
 
 export const Button: React.FC<ButtonProps> = ({
@@ -22,19 +23,26 @@ export const Button: React.FC<ButtonProps> = ({
   iconColor,
   iconSize,
   mode,
+  style,
 }) => {
   const iconNameExists = !!iconName;
+  const styleMode = [
+    mode === "flat" && styles.flatText,
+    mode === "light" && styles.lightText,
+    mode === "dark" && styles.darkText,
+  ];
 
   return (
     <Pressable
       onPress={onPress}
-      style={({ pressed }) => [pressed ? styles.pressed : null]}
+      style={({ pressed }) => [pressed ? styles.pressed : null, style]}
     >
       <View
         style={[
           styles.root,
           iconNameExists && styles.containerWithIcon,
           mode && styles[mode],
+          style,
         ]}
       >
         {iconNameExists && (
@@ -45,15 +53,7 @@ export const Button: React.FC<ButtonProps> = ({
             size={iconSize}
           />
         )}
-        <Text
-          style={[
-            styles.textBtn,
-            mode === "flat" && styles.flatText,
-            mode === "light" && styles.lightText,
-          ]}
-        >
-          {children}
-        </Text>
+        <Text style={[styles.textBtn, ...styleMode]}>{children}</Text>
       </View>
     </Pressable>
   );
@@ -67,7 +67,6 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     justifyContent: "center",
     alignItems: "center",
-    minWidth: 175,
   },
   containerWithIcon: {
     flexDirection: "row",
@@ -94,6 +93,12 @@ const styles = StyleSheet.create({
   },
   lightText: {
     color: colors.primary[500],
+  },
+  dark: {
+    backgroundColor: colors.black,
+  },
+  darkText: {
+    color: colors.white,
   },
   pressed: {
     opacity: 0.7,
