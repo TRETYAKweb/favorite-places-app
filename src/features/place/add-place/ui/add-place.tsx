@@ -6,9 +6,14 @@ import { colors } from "shared/lib";
 import { IFormData, validationSchema } from "../model";
 import { ImagePicker } from "features/place/image-picker";
 import { useState } from "react";
+import { LocationPicker } from "features/place/location-picker";
 
 export const Form = () => {
   const [pickedImage, setPickedImage] = useState<string>("");
+  const [pickedLocation, setPickedLocation] = useState<{
+    latitude: number;
+    longitude: number;
+  } | null>(null);
   const {
     control,
     handleSubmit,
@@ -39,6 +44,10 @@ export const Form = () => {
         )}
       />
       <ImagePicker pickedImage={pickedImage} setPickedImage={setPickedImage} />
+      <LocationPicker
+        pickedLocation={pickedLocation}
+        setPickedLocation={setPickedLocation}
+      />
     </ScrollView>
   );
 };
