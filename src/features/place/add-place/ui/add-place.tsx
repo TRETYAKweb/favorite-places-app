@@ -1,19 +1,22 @@
+import React from "react";
 import { ScrollView, StyleSheet } from "react-native";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Input } from "shared/ui";
 import { colors } from "shared/lib";
 import { IFormData, validationSchema } from "../model";
-import { ImagePicker } from "features/place/image-picker";
-import { useState } from "react";
-import { LocationPicker } from "features/place/location-picker";
 
-export const Form = () => {
-  const [pickedImage, setPickedImage] = useState<string>("");
-  const [pickedLocation, setPickedLocation] = useState<{
-    latitude: number;
-    longitude: number;
-  } | null>(null);
+interface IFormProps {
+  imageSlot: React.ReactNode;
+  locationSlot: React.ReactNode;
+  onSubmit: (data: IFormData) => void;
+}
+
+export const Form: React.FC<IFormProps> = ({
+  imageSlot,
+  locationSlot,
+  onSubmit,
+}) => {
   const {
     control,
     handleSubmit,
@@ -43,11 +46,8 @@ export const Form = () => {
           />
         )}
       />
-      <ImagePicker pickedImage={pickedImage} setPickedImage={setPickedImage} />
-      <LocationPicker
-        pickedLocation={pickedLocation}
-        setPickedLocation={setPickedLocation}
-      />
+      {imageSlot}
+      {locationSlot}
     </ScrollView>
   );
 };
