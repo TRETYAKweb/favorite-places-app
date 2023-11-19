@@ -56,7 +56,6 @@ export const LocationPicker: React.FC<ILocationPicker> = ({
         latitude: location.coords.latitude,
         longitude: location.coords.longitude,
       });
-      console.log(pickedLocation);
     }
   };
 
