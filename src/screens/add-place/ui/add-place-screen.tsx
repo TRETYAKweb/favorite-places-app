@@ -1,12 +1,37 @@
 import { AddPlaceForm } from "features";
 import { useHeaderHeight } from "@react-navigation/elements";
 import { StyleSheet, View } from "react-native";
+import { useState } from "react";
+import { ImagePicker, LocationPicker } from "features";
+import { IFormData } from "features/place/add-place/model";
 
 export const Screen = () => {
+  const [pickedImage, setPickedImage] = useState<string>("");
+  const [pickedLocation, setPickedLocation] = useState<{
+    latitude: number;
+    longitude: number;
+  } | null>(null);
   const headerHeight = useHeaderHeight();
+
+  const onSubmit = (data: IFormData): void => {};
+
   return (
     <View style={[styles.root, { marginTop: headerHeight }]}>
-      <AddPlaceForm />
+      <AddPlaceForm
+        onSubmit={onSubmit}
+        imageSlot={
+          <ImagePicker
+            pickedImage={pickedImage}
+            setPickedImage={setPickedImage}
+          />
+        }
+        locationSlot={
+          <LocationPicker
+            pickedLocation={pickedLocation}
+            setPickedLocation={setPickedLocation}
+          />
+        }
+      />
     </View>
   );
 };
