@@ -2,7 +2,7 @@ import { NavigationContainer, useNavigation } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import React from "react";
 import { StyleSheet, Text } from "react-native";
-import { AddPlaceScreen, AllPlacesScreen } from "screens";
+import { AddPlaceScreen, AllPlacesScreen, MapScreen } from "screens";
 import { colors, fonts } from "shared/lib";
 import { IconButton } from "shared/ui";
 
@@ -17,6 +17,10 @@ const StackNavigation: React.FC = () => {
         headerTransparent: true,
         contentStyle: {
           backgroundColor: colors.bg[300],
+        },
+        headerTintColor: colors.primary[500],
+        headerBackTitleStyle: {
+          fontFamily: fonts.roboto700,
         },
       }}
     >
@@ -39,11 +43,14 @@ const StackNavigation: React.FC = () => {
         name="AddPlace"
         component={AddPlaceScreen}
         options={{
-          headerBackTitleStyle: {
-            fontFamily: fonts.roboto700,
-          },
           headerTitle: () => <Text style={styles.headerTitle}>Add Place</Text>,
-          headerTintColor: colors.primary[500],
+        }}
+      />
+      <Stack.Screen
+        name="Map"
+        component={MapScreen}
+        options={{
+          headerTitle: () => <Text style={styles.headerTitle}>Map</Text>,
         }}
       />
     </Stack.Navigator>
