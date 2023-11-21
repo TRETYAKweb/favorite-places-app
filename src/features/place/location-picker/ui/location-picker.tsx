@@ -7,8 +7,14 @@ import {
   useForegroundPermissions,
   PermissionStatus,
 } from "expo-location";
-import React from "react";
+import React, { useEffect } from "react";
 import MapView from "react-native-maps";
+import { RouteProp } from "@react-navigation/native";
+import {
+  useNavigation,
+  useIsFocused,
+  useRoute,
+} from "@react-navigation/native";
 
 interface ILocationPicker {
   pickedLocation: {
@@ -23,10 +29,21 @@ interface ILocationPicker {
   >;
 }
 
+type RootStackParamList = {
+  AddPlace: {
+    latitude: number;
+    longitude: number;
+  };
+};
+
 export const LocationPicker: React.FC<ILocationPicker> = ({
   pickedLocation,
   setPickedLocation,
 }) => {
+  const navigate = useNavigation();
+  const route = useRoute<RouteProp<RootStackParamList>>();
+  console.log(route);
+  const isFocused = useIsFocused();
   const [status, requestPermission] = useForegroundPermissions();
 
   const verifyPermissions = async () => {
@@ -69,17 +86,26 @@ export const LocationPicker: React.FC<ILocationPicker> = ({
   if (pickedLocation) {
     locationPreview = (
       <MapView
+        key={`${pickedLocation.latitude}-${pickedLocation.longitude}`}
         style={styles.map}
         provider="google"
         showsUserLocation
         initialRegion={{
           ...pickedLocation,
-          latitudeDelta: 2,
-          longitudeDelta: 2,
+          latitudeDelta: 1,
+          longitudeDelta: 1,
         }}
       />
     );
   }
+
+  useEffect(() => {
+    if (route.params && isFocused)
+      setPickedLocation({
+        latitude: route.params.latitude,
+        longitude: route.params.longitude,
+      });
+  }, [route, isFocused]);
 
   return (
     <View style={styles.root}>
@@ -100,7 +126,7 @@ export const LocationPicker: React.FC<ILocationPicker> = ({
           iconColor={colors.white}
           iconSize={21}
           mode="dark"
-          onPress={() => {}}
+          onPress={() => navigate.navigate("Map" as never)}
         >
           Pick on map
         </Button>
