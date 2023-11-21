@@ -55,6 +55,6 @@ export const Form: React.FC<IFormProps> = ({
 const style = StyleSheet.create({
   root: {
     flex: 1,
-    marginTop: 30,
+    marginTop: 20,
   },
 });
