@@ -1,9 +1,12 @@
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { PlacesList } from "widgets";
+import { useHeaderHeight } from "@react-navigation/elements";
 
 export const Screen = () => {
+  const headerHeight = useHeaderHeight();
+
   return (
-    <View style={styles.root}>
+    <View style={[styles.root, { marginTop: headerHeight }]}>
       <PlacesList places={[]} />
     </View>
   );
