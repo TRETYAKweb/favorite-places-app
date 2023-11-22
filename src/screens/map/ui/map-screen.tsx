@@ -8,7 +8,7 @@ import MapView, {
 import { useCallback, useLayoutEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { IconButton } from "shared/ui";
-import { colors, fonts, screenNames } from "shared/lib";
+import { colors, fonts, ScreenName } from "shared/lib";
 import { StackNavigationProp } from "@react-navigation/stack";
 
 type RootStackParamList = {
@@ -16,6 +16,13 @@ type RootStackParamList = {
     latitude: number;
     longitude: number;
   };
+};
+
+const region = {
+  latitude: 51.1657,
+  longitude: 10.4515,
+  latitudeDelta: 1,
+  longitudeDelta: 1,
 };
 
 export const Screen = () => {
@@ -27,13 +34,6 @@ export const Screen = () => {
     longitude: number;
   }>(null);
 
-  const region = {
-    latitude: 51.1657,
-    longitude: 10.4515,
-    latitudeDelta: 1,
-    longitudeDelta: 1,
-  };
-
   const pressHandler = useCallback(() => {
     if (!selectedLocation) {
       Alert.alert(
@@ -43,7 +43,7 @@ export const Screen = () => {
       return;
     }
 
-    navigation.navigate(screenNames.AddPlace, selectedLocation);
+    navigation.navigate(ScreenName.AddPlace, selectedLocation);
   }, [navigation, selectedLocation]);
 
   useLayoutEffect(() => {
