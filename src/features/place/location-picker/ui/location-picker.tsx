@@ -7,8 +7,8 @@ import {
   useForegroundPermissions,
   PermissionStatus,
 } from "expo-location";
-import React, { useEffect } from "react";
-import MapView from "react-native-maps";
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import MapView, { Marker } from "react-native-maps";
 import { RouteProp } from "@react-navigation/native";
 import {
   useNavigation,
@@ -42,9 +42,9 @@ export const LocationPicker: React.FC<ILocationPicker> = ({
 }) => {
   const navigate = useNavigation();
   const route = useRoute<RouteProp<RootStackParamList>>();
-  console.log(route);
   const isFocused = useIsFocused();
   const [status, requestPermission] = useForegroundPermissions();
+  const mapRef = useRef<MapView | null>(null);
 
   const verifyPermissions = async () => {
     if (status?.status === PermissionStatus.UNDETERMINED) {
@@ -69,6 +69,7 @@ export const LocationPicker: React.FC<ILocationPicker> = ({
 
     const location = await getCurrentPositionAsync();
     if (location) {
+      console.log(location);
       setPickedLocation({
         latitude: location.coords.latitude,
         longitude: location.coords.longitude,
@@ -83,29 +84,57 @@ export const LocationPicker: React.FC<ILocationPicker> = ({
     </View>
   );
 
+  const isMapReadyRef = useRef(true);
+
+  useEffect(() => {
+    if (isFocused) {
+      isMapReadyRef.current = true;
+      return;
+    }
+    isMapReadyRef.current = false;
+  }, [isFocused, isMapReadyRef.current]);
+
   if (pickedLocation) {
     locationPreview = (
       <MapView
-        key={`${pickedLocation.latitude}-${pickedLocation.longitude}`}
+        // key={`${pickedLocation.latitude}-${pickedLocation.longitude}`}
         style={styles.map}
+        ref={mapRef}
         provider="google"
-        showsUserLocation
-        initialRegion={{
-          ...pickedLocation,
+        onMapLoaded={() => {
+          if (isMapReadyRef.current) {
+            mapRef.current?.animateCamera({
+              center: {
+                latitude: pickedLocation.latitude,
+                longitude: pickedLocation.longitude,
+              },
+              zoom: 10,
+              heading: 0,
+              pitch: 0,
+              altitude: 0,
+            });
+          }
+        }}
+        region={{
+          latitude: pickedLocation.latitude,
+          longitude: pickedLocation.longitude,
           latitudeDelta: 1,
           longitudeDelta: 1,
         }}
-      />
+      >
+        <Marker coordinate={pickedLocation} key={Date.now()} />
+      </MapView>
     );
   }
 
   useEffect(() => {
-    if (route.params && isFocused)
+    if (route.params && isFocused) {
       setPickedLocation({
         latitude: route.params.latitude,
         longitude: route.params.longitude,
       });
-  }, [route, isFocused]);
+    }
+  }, [route.params, isFocused]);
 
   return (
     <View style={styles.root}>
