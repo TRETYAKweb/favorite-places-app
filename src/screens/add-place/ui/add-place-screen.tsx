@@ -4,6 +4,7 @@ import { StyleSheet, View } from "react-native";
 import { useState } from "react";
 import { ImagePicker, LocationPicker } from "features";
 import { IFormData } from "features/place/add-place/model";
+import { api } from "shared/api";
 
 export const Screen = () => {
   const [pickedImage, setPickedImage] = useState<string>("");
@@ -11,9 +12,18 @@ export const Screen = () => {
     latitude: number;
     longitude: number;
   } | null>(null);
+  const [address, setAddress] = useState<string | null>(null);
   const headerHeight = useHeaderHeight();
 
-  const onSubmit = (data: IFormData): void => {};
+  const onSubmit = async (data: IFormData) => {
+    if (pickedLocation) {
+      const address = await api.getAdress(
+        pickedLocation?.latitude,
+        pickedLocation?.longitude
+      );
+      typeof address === "string" && setAddress(address);
+    }
+  };
 
   return (
     <View style={[styles.root, { marginTop: headerHeight }]}>
