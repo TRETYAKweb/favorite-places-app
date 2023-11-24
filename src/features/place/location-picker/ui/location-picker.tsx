@@ -167,6 +167,7 @@ export const LocationPicker: React.FC<ILocationPicker> = ({
 const styles = StyleSheet.create({
   root: {
     marginTop: 15,
+    marginBottom: 20,
   },
   inner: {
     flexDirection: "row",
