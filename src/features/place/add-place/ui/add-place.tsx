@@ -2,7 +2,7 @@ import React from "react";
 import { ScrollView, StyleSheet } from "react-native";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Input } from "shared/ui";
+import { Button, Input } from "shared/ui";
 import { colors } from "shared/lib";
 import { IFormData, validationSchema } from "../model";
 
@@ -48,6 +48,7 @@ export const Form: React.FC<IFormProps> = ({
       />
       {imageSlot}
       {locationSlot}
+      <Button onPress={handleSubmit(onSubmit)}>Add place</Button>
     </ScrollView>
   );
 };
