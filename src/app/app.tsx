@@ -4,6 +4,7 @@ import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import { fontAssets } from "shared/lib";
 import { StatusBar } from "expo-status-bar";
+import Toast from "react-native-toast-message";
 
 export const App: React.FC = () => {
   SplashScreen.preventAutoHideAsync();
@@ -19,6 +20,7 @@ export const App: React.FC = () => {
     <>
       <StatusBar style="dark" />
       <Routing />
+      <Toast />
     </>
   );
 };
