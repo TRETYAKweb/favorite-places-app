@@ -21,7 +21,7 @@ export const List: React.FC<IListProps> = ({ places }) => {
   return (
     <FlatList
       data={places}
-      keyExtractor={(item) => item.id}
+      keyExtractor={(item) => item?.id}
       renderItem={({ item }) => (
         <PlaceCard
           title={item.title}
