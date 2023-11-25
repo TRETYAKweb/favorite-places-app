@@ -15,6 +15,7 @@ import {
   useIsFocused,
   useRoute,
 } from "@react-navigation/native";
+import { api } from "shared/api";
 
 interface ILocationPicker {
   pickedLocation: {
@@ -25,6 +26,7 @@ interface ILocationPicker {
     React.SetStateAction<{
       latitude: number;
       longitude: number;
+      address: string;
     } | null>
   >;
 }
@@ -45,6 +47,19 @@ export const LocationPicker: React.FC<ILocationPicker> = ({
   const isFocused = useIsFocused();
   const [status, requestPermission] = useForegroundPermissions();
   const mapRef = useRef<MapView | null>(null);
+
+  const setLocationWithAddress = async (
+    latitude: number,
+    longitude: number
+  ) => {
+    const address = await api.getAdress(latitude, longitude);
+    if (typeof address === "string")
+      setPickedLocation({
+        latitude: latitude,
+        longitude: longitude,
+        address: address,
+      });
+  };
 
   const verifyPermissions = async () => {
     if (status?.status === PermissionStatus.UNDETERMINED) {
@@ -68,13 +83,11 @@ export const LocationPicker: React.FC<ILocationPicker> = ({
     if (!hasPermission) return;
 
     const location = await getCurrentPositionAsync();
-    if (location) {
-      console.log(location);
-      setPickedLocation({
-        latitude: location.coords.latitude,
-        longitude: location.coords.longitude,
-      });
-    }
+    if (location)
+      setLocationWithAddress(
+        location.coords.latitude,
+        location.coords.longitude
+      );
   };
 
   let locationPreview = (
@@ -97,7 +110,6 @@ export const LocationPicker: React.FC<ILocationPicker> = ({
   if (pickedLocation) {
     locationPreview = (
       <MapView
-        // key={`${pickedLocation.latitude}-${pickedLocation.longitude}`}
         style={styles.map}
         ref={mapRef}
         provider="google"
@@ -128,12 +140,8 @@ export const LocationPicker: React.FC<ILocationPicker> = ({
   }
 
   useEffect(() => {
-    if (route.params && isFocused) {
-      setPickedLocation({
-        latitude: route.params.latitude,
-        longitude: route.params.longitude,
-      });
-    }
+    if (route.params && isFocused)
+      setLocationWithAddress(route.params.latitude, route.params.longitude);
   }, [route.params, isFocused]);
 
   return (
