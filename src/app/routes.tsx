@@ -1,10 +1,10 @@
+import React, { useEffect, useState } from "react";
 import { NavigationContainer, useNavigation } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import React from "react";
 import { StyleSheet, Text } from "react-native";
 import { AddPlaceScreen, AllPlacesScreen, MapScreen } from "screens";
-import { colors, fonts } from "shared/lib";
-import { IconButton } from "shared/ui";
+import { colors, fonts, init } from "shared/lib";
+import { IconButton, LoadingOverlay, openNotificationError } from "shared/ui";
 
 const Stack = createNativeStackNavigator();
 
@@ -58,6 +58,22 @@ const StackNavigation: React.FC = () => {
 };
 
 export const Routing: React.FC = () => {
+  const [dbInitialized, setDbInitialized] = useState(false);
+
+  useEffect(() => {
+    init()
+      .then(() => {
+        setDbInitialized(true);
+      })
+      .catch((error) => {
+        openNotificationError(error);
+      });
+  }, []);
+
+  if (!dbInitialized) {
+    return <LoadingOverlay />;
+  }
+
   return (
     <NavigationContainer>
       <StackNavigation />
