@@ -7,20 +7,7 @@ import { IFormData } from "features/place/add-place/model";
 import { useNavigation } from "@react-navigation/native";
 import { openNotificationError } from "shared/ui";
 import { Place } from "shared/models";
-import { StackNavigationProp } from "@react-navigation/stack";
-import { ScreenName } from "shared/lib";
-
-type Param = {
-  AllPlaces: {
-    newPlace: {
-      title: string;
-      imgUri: string;
-      address: string;
-      location: { lat: number; lng: number };
-      id: string;
-    };
-  };
-};
+import { ScreenName, insertPlace } from "shared/lib";
 
 export const Screen = () => {
   const [pickedImage, setPickedImage] = useState<string>("");
@@ -30,7 +17,7 @@ export const Screen = () => {
     address: string;
   } | null>(null);
   const headerHeight = useHeaderHeight();
-  const navigation = useNavigation<StackNavigationProp<Param>>();
+  const navigation = useNavigation();
 
   const onSubmit = async (data: IFormData) => {
     if (!pickedImage) {
@@ -41,12 +28,18 @@ export const Screen = () => {
       openNotificationError("Нужно гео");
       return;
     }
-    const place = new Place(data.title, pickedImage, pickedLocation.address, {
-      lat: pickedLocation.latitude,
-      lng: pickedLocation.longitude,
-    });
-    console.log(place);
-    navigation.navigate(ScreenName.AllPlaces, { newPlace: place });
+    const place = new Place(
+      data.title,
+      pickedImage,
+      pickedLocation.address,
+      {
+        lat: pickedLocation.latitude,
+        lng: pickedLocation.longitude,
+      },
+      new Date().toString() + Math.random().toString()
+    );
+    insertPlace(place);
+    navigation.navigate(ScreenName.AllPlaces as never);
   };
 
   return (
