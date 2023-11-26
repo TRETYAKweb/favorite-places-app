@@ -6,11 +6,18 @@ interface ICardProps {
   title: string;
   imgUri: string;
   address: string;
+  onPress: () => void;
 }
 
-export const Card: React.FC<ICardProps> = ({ title, address, imgUri }) => {
+export const Card: React.FC<ICardProps> = ({
+  title,
+  address,
+  imgUri,
+  onPress,
+}) => {
   return (
     <Pressable
+      onPress={onPress}
       style={({ pressed }) => [styles.root, pressed && styles.pressed]}
     >
       <Image style={styles.image} source={{ uri: imgUri }} />
@@ -28,6 +35,7 @@ const styles = StyleSheet.create({
     alignItems: "flex-start",
     borderRadius: 8,
     backgroundColor: colors.white,
+    marginVertical: 7.5,
   },
   image: {
     flex: 1,
