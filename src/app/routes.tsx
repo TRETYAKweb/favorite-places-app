@@ -2,8 +2,13 @@ import React, { useEffect, useState } from "react";
 import { NavigationContainer, useNavigation } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { StyleSheet, Text } from "react-native";
-import { AddPlaceScreen, AllPlacesScreen, MapScreen } from "screens";
-import { colors, fonts, init } from "shared/lib";
+import {
+  AddPlaceScreen,
+  AllPlacesScreen,
+  MapScreen,
+  PlaceDetailsScreen,
+} from "screens";
+import { ScreenName, colors, fonts, init } from "shared/lib";
 import { IconButton, LoadingOverlay, openNotificationError } from "shared/ui";
 
 const Stack = createNativeStackNavigator();
@@ -25,7 +30,7 @@ const StackNavigation: React.FC = () => {
       }}
     >
       <Stack.Screen
-        name="AllPlaces"
+        name={ScreenName.AllPlaces}
         component={AllPlacesScreen}
         options={{
           headerTitle: () => <Text style={styles.headerTitle}>All Places</Text>,
@@ -40,19 +45,28 @@ const StackNavigation: React.FC = () => {
         }}
       />
       <Stack.Screen
-        name="AddPlace"
+        name={ScreenName.AddPlace}
         component={AddPlaceScreen}
         options={{
           headerTitle: () => <Text style={styles.headerTitle}>Add Place</Text>,
         }}
       />
       <Stack.Screen
-        name="Map"
+        name={ScreenName.Map}
         component={MapScreen}
         options={{
           headerTitle: () => <Text style={styles.headerTitle}>Map</Text>,
         }}
       />
+      <Stack.Screen
+        name={ScreenName.PlaceDetails}
+        component={PlaceDetailsScreen}
+        options={{
+          headerTitle: () => (
+            <Text style={styles.headerTitle}>Place Details</Text>
+          ),
+        }}
+      ></Stack.Screen>
     </Stack.Navigator>
   );
 };
@@ -84,6 +98,6 @@ export const Routing: React.FC = () => {
 const styles = StyleSheet.create({
   headerTitle: {
     fontFamily: fonts.gilroy800,
-    fontSize: 17,
+    fontSize: 21,
   },
 });
