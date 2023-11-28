@@ -1,25 +1,44 @@
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import { useEffect, useLayoutEffect, useState } from "react";
 import { Image, StyleSheet, Text, View, ScrollView } from "react-native";
-import { IPlaceSQLite, colors, fetchPlaceDetails, fonts } from "shared/lib";
+import {
+  IPlaceSQLite,
+  ScreenName,
+  colors,
+  fetchPlaceDetails,
+  fonts,
+} from "shared/lib";
 import { useHeaderHeight } from "@react-navigation/elements";
 
 import { Ionicons } from "@expo/vector-icons";
 import { Button } from "shared/ui";
+import { StackNavigationProp } from "@react-navigation/stack";
 
-type IconName = "add" | "add-circle" | "bookmark";
-
-type Param = {
+type RoutParam = {
   PlaceDetails: {
     id: string;
   };
 };
 
+type NavigationParam = {
+  Map: {
+    lat: number;
+    lng: number;
+  };
+};
+
 export const Screen = () => {
   const [fetchedPlace, setFetchedPlace] = useState<IPlaceSQLite>();
-  const route = useRoute<RouteProp<Param>>();
-  const navigation = useNavigation();
+  const route = useRoute<RouteProp<RoutParam>>();
+  const navigation = useNavigation<StackNavigationProp<NavigationParam>>();
   const headerHeight = useHeaderHeight();
+
+  const handleButton = (lat: number, lng: number) => {
+    navigation.navigate(ScreenName.Map, {
+      lat,
+      lng,
+    });
+  };
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -62,7 +81,12 @@ export const Screen = () => {
           iconName="map"
           iconSize={24}
           iconColor={colors.white}
-          onPress={() => {}}
+          onPress={() =>
+            handleButton(
+              fetchedPlace?.lat as number,
+              fetchedPlace?.lng as number
+            )
+          }
         >
           View on map
         </Button>
