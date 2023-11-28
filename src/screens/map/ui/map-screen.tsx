@@ -6,7 +6,7 @@ import MapView, {
   MapPressEvent,
 } from "react-native-maps";
 import { useCallback, useLayoutEffect, useState } from "react";
-import { useNavigation } from "@react-navigation/native";
+import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import { IconButton } from "shared/ui";
 import { colors, fonts, ScreenName } from "shared/lib";
 import { StackNavigationProp } from "@react-navigation/stack";
@@ -18,21 +18,34 @@ type RootStackParamList = {
   };
 };
 
-const region = {
-  latitude: 51.1657,
-  longitude: 10.4515,
-  latitudeDelta: 1,
-  longitudeDelta: 1,
+type PlaceDetailsParam = {
+  Map: {
+    lat: number;
+    lng: number;
+  };
 };
 
 export const Screen = () => {
   const headerHeight = useHeaderHeight();
+  const route = useRoute<RouteProp<PlaceDetailsParam>>();
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
+
+  const initialLocation = route.params && {
+    latitude: route.params.lat,
+    longitude: route.params.lng,
+  };
 
   const [selectedLocation, setSelectedLocation] = useState<null | {
     latitude: number;
     longitude: number;
-  }>(null);
+  }>(initialLocation);
+
+  const region = {
+    latitude: initialLocation ? initialLocation.latitude : 51.1657,
+    longitude: initialLocation ? initialLocation.longitude : 10.4515,
+    latitudeDelta: 1,
+    longitudeDelta: 1,
+  };
 
   const pressHandler = useCallback(() => {
     if (!selectedLocation) {
@@ -47,6 +60,7 @@ export const Screen = () => {
   }, [navigation, selectedLocation]);
 
   useLayoutEffect(() => {
+    if (initialLocation) return;
     navigation.setOptions({
       headerRight: () => (
         <IconButton
@@ -60,6 +74,7 @@ export const Screen = () => {
   }, [navigation, pressHandler]);
 
   const selectLocationHandler = (event: MapPressEvent) => {
+    if (initialLocation) return;
     const { coordinate } = event.nativeEvent;
     setSelectedLocation({
       latitude: coordinate.latitude,
